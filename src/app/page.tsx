@@ -1,103 +1,146 @@
+"use client"
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import MediaModal, { ImageData } from "@/components/MediaModal";
 import Image from "next/image";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+const imageData: ImageData[] = [
+  {
+    id: 1,
+    imageUrl: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["child", "hands", "help"]
+  },
+  {
+    id: 2,
+    imageUrl: "https://plus.unsplash.com/premium_photo-1683134055585-3d84cb07b60e?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["volunteer", "aid", "community"]
+  },
+  {
+    id: 3,
+    imageUrl: "https://images.unsplash.com/photo-1620608929452-ccc05381b0f7?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["child", "education", "hope"]
+  },
+  {
+    id: 4,
+    imageUrl: "https://images.unsplash.com/photo-1518398046578-8cca57782e17?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["elderly", "support", "care"]
+  },
+  {
+    id: 5,
+    imageUrl: "https://images.unsplash.com/photo-1601839777132-b3f4e455c369?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["medical", "relief", "teamwork"]
+  },
+  {
+    id: 6,
+    imageUrl: "https://images.unsplash.com/photo-1635510952461-1fc1b7c96314?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["disaster", "response", "rescue"]
+  },
+  {
+    id: 7,
+    imageUrl: "https://images.unsplash.com/photo-1652858672796-960164bd632b?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["smile", "children", "charity"]
+  },
+  {
+    id: 8,
+    imageUrl: "https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["donation", "food", "relief"]
+  },
+  {
+    id: 9,
+    imageUrl: "https://plus.unsplash.com/premium_photo-1683140595667-f90d3ee9898e?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["education", "learning", "youth"]
+  },
+  {
+    id: 10,
+    imageUrl: "https://images.unsplash.com/photo-1727549305105-24eeaa202f3e?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["support", "shelter", "refugee"]
+  },
+   {
+    id: 11,
+    imageUrl: "https://images.unsplash.com/photo-1727627441635-f3c2c3f9090d?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["water", "children", "access"]
+  },
+  {
+    id: 12,
+    imageUrl: "https://images.unsplash.com/photo-1623990815896-99b0d5fb3f41?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["healthcare", "nurse", "assistance"]
+  },
+  {
+    id: 13,
+    imageUrl: "https://images.unsplash.com/photo-1629273229664-11fabc0becc0?q=80&w=2662&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["education", "children"]
+  },
+  {
+    id: 14,
+    imageUrl: "https://images.unsplash.com/photo-1727552889524-e1159fc95498?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["humanitarian", "crisis", "relief"]
+  },
+  {
+    id: 15,
+    imageUrl: "https://images.unsplash.com/photo-1710092784814-4a6f158913b8?q=80&w=2612&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["food", "volunteer", "distribution"]
+  },
+  {
+    id: 16,
+    imageUrl: "https://images.unsplash.com/photo-1643321611132-15f7b8a63347?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["teamwork", "unity", "community"]
+  },
+  {
+    id: 17,
+    imageUrl: "https://images.unsplash.com/photo-1643321614612-45037d065d22?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    tags: ["child", "hope", "school"]
+  }
+];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+export default function Home() {
+  const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
+
+  const handleImageSelect = (image: ImageData) => {
+    setSelectedImage(image);
+  };
+
+  return (
+    <div className="flex flex-col justify-center items-center min-h-screen p-8">
+      <MediaModal 
+        images={imageData} 
+        trigger={<Button variant="outline">Open Media Gallery</Button>}
+        onImageSelect={handleImageSelect}
+      />
+      
+      {selectedImage && (
+        <Card className="mt-8 max-w-md w-full">
+          <CardContent className="space-y-4">
+            <div>
+              <span className="font-medium">ID:</span> {selectedImage.id}
+            </div>
+            <div>
+              <span className="font-medium">Image:</span>
+              <div className="mt-2 relative aspect-video w-full overflow-hidden rounded border">
+                <Image
+                  src={selectedImage.imageUrl}
+                  alt={`Selected image ${selectedImage.id}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 400px"
+                />
+              </div>
+            </div>
+            <div>
+              <span className="font-medium">Tags:</span>
+              <div className="flex flex-wrap gap-1 mt-1">
+                {selectedImage.tags.map((tag, index) => (
+                  <Badge key={index} variant="secondary">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
